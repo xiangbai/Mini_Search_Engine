@@ -8,7 +8,7 @@
 #include "Socket.h"
 #include <iostream>
 
-Socket::Socket():_socket_fd(0){
+Socket::Socket(const std::string &ip, const std::string &port):_socket_fd(0){
 	// TODO Auto-generated constructor stub
 	if(-1 == (_socket_fd = socket(AF_INET, SOCK_STREAM, 0)))
 	{
@@ -26,8 +26,8 @@ Socket::Socket():_socket_fd(0){
 	/*
 	 * 此处需要读取配置文件，以获取端口号和IP地址
 	 */
-	m_server_addr.sin_port = htons(6688);
-	m_server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	m_server_addr.sin_port = htons(atoi(port.c_str()));
+	m_server_addr.sin_addr.s_addr = inet_addr(ip.c_str());
 
 	int reuse = 1 ;
 	int buf_num = BUF_SIZE;

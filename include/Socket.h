@@ -31,7 +31,7 @@
 #define BUF_SIZE 1024
 class Socket {
 public:
-	Socket();  //socket,bind
+	Socket(const std::string &ip, const std::string &port);  //socket,bind
 
 	void Socket_listen();  //listen
 	int Socket_accept();  //accept
