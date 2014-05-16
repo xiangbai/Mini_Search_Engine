@@ -12,7 +12,11 @@
 #define MAXRECV 1024
 int main(int argc, char**argv)
 {
-	Socket socket ;
+	Conf conf(argv[1]);
+	std::string ip, port ;
+	ip = conf.get_value("Socket_ip");
+	port = conf.get_value("Socket_port") ;
+	Socket socket(ip, port) ;
 	socket.Socket_listen();  //监听
 	pid_t pid ;
 	int socket_fd = socket.get_socket();
