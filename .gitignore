@@ -1,0 +1,9 @@
+.
+..
+.git
+.cproject
+.project
+a.out
+data/*
+data/webpage/*
+data/ripepage.lib
