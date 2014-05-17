@@ -1,0 +1,2 @@
+doc:Conf.cpp EncodingConverter.cpp WebPage.cpp Document.cpp
+	g++ -g -o doc Conf.cpp EncodingConverter.cpp WebPage.cpp Document.cpp -I../include -DCPPJIEBA_GBK
