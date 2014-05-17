@@ -7,7 +7,7 @@
 
 #include "Conf.h"
 #include "ConstructRipePage.h"
-
+#include "ConstructRipePage.h"
 Conf::Conf(const std::string &dir){
 	fin.open(dir.c_str()) ;
 	if(!fin)
@@ -21,7 +21,7 @@ Conf::Conf(const std::string &dir){
 		m_read.insert(make_pair(key, value));
 	}
 	//服务器一启动就打开配置文件
-	ConstructRipePage page(get_value("Source_page"), get_value("Web_page"), get_value("Index_page"));
+	//ConstructRipePage page(get_value("Source_page"), get_value("Web_page"), get_value("Index_page"));
 }
 
 //通过相应的名字获取地址
