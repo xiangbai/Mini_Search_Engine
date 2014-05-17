@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <map>
 class WebPage {
 friend class Document ;
 public:
@@ -21,7 +22,7 @@ private:
 	std::string _url ;
 	std::string _title ;
 	std::string _content ;
-	std::vector<std::pair<std::string, int> >  v_word ;
+	std::map<std::string, int> m_word ;
 };
 
 #endif /* WEBPAGE_H_ */

@@ -8,8 +8,9 @@
 #include "WebPage.h"
 
 WebPage::WebPage()
-	:_docid(0), _url(""), _title(""), _content(""), v_word(0){
+	:_docid(0), _url(""), _title(""), _content(""){
 	// TODO Auto-generated constructor stub
+	m_word.clear() ;
 }
 
 WebPage::~WebPage() {
