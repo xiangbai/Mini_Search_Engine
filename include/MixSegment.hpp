@@ -35,7 +35,7 @@ namespace CppJieba
                     LogError("_hmmSeg init");
                     return false;
                 }
-                LogInfo("MixSegment init(%s, %s)", mpSegDict.c_str(), hmmSegDict.c_str());
+             //   LogInfo("MixSegment init(%s, %s)", mpSegDict.c_str(), hmmSegDict.c_str());
                 return _setInitFlag(true);
             }
         public:

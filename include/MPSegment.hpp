@@ -50,7 +50,7 @@ namespace CppJieba
                 }
                 _dictTrie.init(dictPath, userDictPath);
                 assert(_dictTrie);
-                LogInfo("MPSegment init(%s) ok", dictPath.c_str());
+              //  LogInfo("MPSegment init(%s) ok", dictPath.c_str());
                 return _setInitFlag(true);
             }
         public:

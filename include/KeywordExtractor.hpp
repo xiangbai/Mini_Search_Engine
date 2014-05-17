@@ -56,6 +56,7 @@ namespace CppJieba
             bool extract(const string& str, vector<pair<string, double> >& keywords, size_t topN) const
             {
                 vector<string> words;
+                //分词并获取topN的词
                 if(!_segment.cut(str, words))
                 {
                     LogError("segment cut(%s) failed.", str.c_str());
@@ -71,7 +72,9 @@ namespace CppJieba
                     }
                     wordmap[*iter] += 1.0;
                 }
-
+                /*
+                 * 去除停用词的情况，获取唯一的词库
+                 */
                 for(map<string, double>::iterator itr = wordmap.begin(); itr != wordmap.end(); )
                 {
                     if(_stopWords.end() != _stopWords.find(itr->first))
