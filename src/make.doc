@@ -1,2 +1,2 @@
-doc:Conf.cpp EncodingConverter.cpp WebPage.cpp Document.cpp UniquePage.cpp
-	g++ -g -o doc Conf.cpp EncodingConverter.cpp WebPage.cpp Document.cpp UniquePage.cpp -I../include -DCPPJIEBA_GBK
+doc:Conf.cpp EncodingConverter.cpp WebPage.cpp Document.cpp UniquePage.cpp Segment.cpp
+	g++ -g -o doc Conf.cpp EncodingConverter.cpp WebPage.cpp Document.cpp UniquePage.cpp Segment.cpp -I../include -DCPPJIEBA_GBK
