@@ -26,9 +26,6 @@ public:
 private:
 	//比较两个网页内容
 	int compare(const WebPage &lhs, const WebPage &ths);
-	//删除相似网页中docid大的内容
-	void delete_similar_page(std::vector<WebPage> &webpage, int docid);
-	std::vector<int> v_count ;
 };
 
 #endif /* UNIQUEPAGE_H_ */
