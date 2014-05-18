@@ -7,8 +7,13 @@
 
 #include "Document.h"
 #include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdint.h>
+#include "UniquePage.h"
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
-#define TOPN 10
+#define TOPN 11
 using namespace CppJieba;
 
 const char * const dict_path = "/var/www/search_engine/data/jieba.dict.gbk";
@@ -53,24 +58,34 @@ void Document::read_page(const std::string &webpage, const std::string &indexpag
 			 */
 
 			int topN = TOPN ;
-			sort_page_words(page,topN);
+			sort_page_words(page,topN);  //获取topN
 
 
 			v_webpage.push_back(page) ;
+		//	EncodingConverter trans;
+		//	if(page._docid < 20)
+		//	{
+				//std::cout<<"page.m_word: "<<page.m_word.size()<<std::endl;
+			/*	for(std::map<std::string, int>::iterator iter = page.m_word.begin(); iter != page.m_word.end(); ++iter)
+				{
+					std::string temp = iter->first;
+					temp = trans.gbkToutf8(temp);
 
-			if(page._docid < 5)
-			{
-				std::cout<<"page.m_word: "<<page.m_word.size()<<std::endl;
-				continue;
-			}
-			else
-			{
-				break;
-			}
+					std::cout<<temp<<"-----"<<temp.size()<<"-------"<<iter->second<<std::endl;
+				}
+				std::cout<<"*************"<<std::endl;  */
+		//		delete [] result ;
+		//		continue;
+		//	}
+		//	else
+		//	{
+		//		delete [] result ;
+		//		break;
+		//	}
 			delete [] result ;
 		}
 
-		std::cout<<"after the size is: "<<v_webpage.size()<<std::endl;
+		std::cout<<"v_webpage the size is: "<<v_webpage.size()<<std::endl;
 		fclose(p_page);
 		fclose(p_index);
 }
@@ -89,15 +104,20 @@ void Document::cut_page(WebPage &page , std::string &document) //或得一篇文
 	 */
 	//遍历分词数组，以记录每个分词的词频
 	std::map<std::string, int> map_word;
-
+	std::string space(" ");
+	//char n = 13 ;
+	//printf("%c\n",n);
 	for(std::vector<std::string>::iterator iter = words.begin(); iter != words.end(); iter++)
 	{
-		//将分割出来的单词添加到map中，并统计该词出现的词频
-		pair<std::map<string, int>::iterator, bool> ret =
-				map_word.insert(make_pair(*iter, 1));
-		if (!ret.second)
+		if(*iter != space)
 		{
-			 ++ret.first->second;
+			//将分割出来的单词添加到map中，并统计该词出现的词频
+			pair<std::map<string, int>::iterator, bool> ret =
+					map_word.insert(make_pair(*iter, 1));
+			if (!ret.second)
+			{
+				++ret.first->second;
+			}
 		}
 	}
 	get_wordvector(page, map_word);   //去停用词，获取唯一有效的词库
@@ -161,6 +181,7 @@ void Document::sort_page_words(WebPage &page, int topN)
 	{
 		page.m_word.insert(*iter);
 	}
+	//std::cout<<"before size is "<<page.m_word.size()<<std::endl;
 }
 //加载停用词到内存中
 void Document::_loadStopWordDict(const std::string &filePath)
@@ -190,7 +211,7 @@ int main(int argc, char **argv)
 {
 	Conf conf(argv[1]);
 	Document doc(conf.get_value("Web_page"), conf.get_value("Index_page"), conf.get_value("Stop_list"));
-
+	UniquePage uqpage(doc);
 	std::cout<<"end"<<std::endl;
 	return 0 ;
 }

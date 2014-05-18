@@ -38,13 +38,13 @@ public:
 	void cut_page(WebPage &page , std::string &document);
 	void get_info(WebPage &page , std::string &document);
 	void get_wordvector(WebPage &page, std::map<std::string, int> & map_word);
+
 private:
 
 	std::vector<WebPage> v_webpage ;
-
 	std::set<std::string> _stopWords ;  //存储形式是GBK格式
-	void _loadStopWordDict(const std::string &filePath);
 
+	void _loadStopWordDict(const std::string &filePath);
 	void sort_page_words(WebPage &page, int topN);
 
 };
