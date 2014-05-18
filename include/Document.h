@@ -21,6 +21,7 @@
 #include <set>
 #include <assert.h>
 #include <cmath>
+#include <queue>
 
 #include "MixSegment.hpp"
 #include "EncodingConverter.h"
@@ -35,17 +36,16 @@ public:
 	Document(const std::string &webpage, const std::string &indexpage, const std::string &stopfile);
 	virtual ~Document();
 	void read_page(const std::string &webpage, const std::string &indexpage);
-	void cut_page(WebPage &page , std::string &document);
-	void get_info(WebPage &page , std::string &document);
-	void get_wordvector(WebPage &page, std::map<std::string, int> & map_word);
-
+	void get_info(WebPage &page , std::string &document);  //获取网页的content内容
+	void display(int docid, WebPage &page);
 private:
 
 	std::vector<WebPage> v_webpage ;
-	std::set<std::string> _stopWords ;  //存储形式是GBK格式
+	std::string _stopfile ;
+	std::priority_queue<std::pair< int,std::string >, std::vector<std::pair<int, std::string > >,std::less<std::pair< int,std::string> > > queueKless;
 
-	void _loadStopWordDict(const std::string &filePath);
-	void sort_page_words(WebPage &page, int topN);
+	void sort_page_words(std::map<std::string, int> &m_word, int topN);  //排序，获取TOPN的词
+	void one_page_info(const std::string &str, FILE *p_page, FILE*p_index);
 
 };
 
