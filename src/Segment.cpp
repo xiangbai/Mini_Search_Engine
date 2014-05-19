@@ -6,12 +6,15 @@
  */
 
 #include "Segment.h"
+
 const char * const dict_path = "/var/www/search_engine/data/jieba.dict.gbk";
 const char * const model_path = "/var/www/search_engine/data/hmm_model.gbk";
 
 using namespace CppJieba;
 
-Segment::Segment(const std::string &filePath) {
+//MixSegment segment(dict_path, model_path);
+
+Segment::Segment(const std::string &filePath, CppJieba::MixSegment &segment):segment(segment){
 	// TODO Auto-generated constructor stub
 	_stopWords.clear() ;
 	_loadStopWordDict(filePath);  //加载停用词表
@@ -19,8 +22,6 @@ Segment::Segment(const std::string &filePath) {
 //分词
 void Segment::cut_page(std::string &content, std::map<std::string, int> &map_word) //或得一篇文章的全部内容
 {
-	MixSegment segment(dict_path, model_path);
-
 	std::vector<std::string> words ;
 	words.clear() ;
 

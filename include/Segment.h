@@ -15,12 +15,13 @@
 #include "MixSegment.hpp"
 class Segment {
 public:
-	Segment(const std::string &filePath);
+	Segment(const std::string &filePath, CppJieba::MixSegment &segment);
 	virtual ~Segment();
 	void cut_page(std::string &content, std::map<std::string, int> &map_word);  //进行分词操作
 	bool extract(const std::string &stopword);
 
 private:
+	CppJieba::MixSegment &segment ;
 	std::set<std::string> _stopWords ;  //存储形式是GBK格式
 	void _loadStopWordDict(const std::string &filePath);  //加载停用词文件
 };
