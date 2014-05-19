@@ -29,9 +29,8 @@ private:
 	int t_index ;
 	int start_index ;
 	int end_index ;
-	int file_size ;
-	std::ofstream _fout ;
-	std::ofstream _fout_index ;
+	std::ofstream _fout ;        //网页文件流
+	std::ofstream _fout_index ;  //索引文件流
 };
 
 #endif /* CONSTRUCTRIPEPAGE_H_ */

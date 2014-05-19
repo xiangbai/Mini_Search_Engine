@@ -53,7 +53,7 @@ std::string get_title(std::string line)
 	}
 	else
 	{
-		title = "" ;
+		title = " " ;
 	}
 	return title ;
 }
@@ -88,28 +88,33 @@ void ConstructRipePage::create_webpage(const std::string &source)
 		 * 从读出的内容中解析出标题和内容
 		 */
 		title = get_title(line);
-		if(title.size() != 0) //得到标题的内容
+		if(title == " ") //得到标题的内容
+		{
+			++count_line ;
+		}
+		else
 		{
 			break;
 		}
-		++count_line ;
-
 	}
 	/*
 	 * 没有标题字体的情况，获取第一行内容作为标题
 	 */
 	fin.seekg(0);
-	while(getline(fin, line))
+	if(title == " ")
 	{
-		if(line.size() == 0)
+		while(getline(fin, line))
 		{
-			continue ;
-		}
-		else
-		{
-			title = line ;
-			_fout<<title<<form_4 ;
-			break;
+			if(line.size() == 0)
+			{
+				continue ;
+			}
+			else
+			{
+				title = line ;
+				_fout<<title<<form_4 ;
+				break;
+			}
 		}
 	}
 	fin.seekg(0);
