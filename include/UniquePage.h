@@ -10,22 +10,26 @@
 /*
  * 用与实现网页去重,只要词中有六个相等的词组，则认为其是相似的，则删除其中的一篇
  */
+#include <stdlib.h>
+#include <stdio.h>
 #include <string>
 #include <utility>
 #include <vector>
 #include <fstream>
-#include "Document.h"
-
+#include "WebPage.h"
+class Document ;
+class Offset ;
 class UniquePage {
 public:
-	UniquePage(const std::string &filename, Document &doc);
-	UniquePage(Document &doc);
-	void write_page(const std::string &filename);
-	void compare_page(Document &doc);
+	UniquePage(const std::string &indexfile, Document &_document, Offset &offset);
+	void write_page(const std::string &indexfile);
+	void compare_page();
 	virtual ~UniquePage();
 private:
 	//比较两个网页内容
-	int compare(const WebPage &lhs, const WebPage &ths);
+	int compare(std::vector<std::string> &lhs, std::vector<std::string> &ths);
+	Document &_document ;
+	Offset &offset ;
 };
 
 #endif /* UNIQUEPAGE_H_ */
