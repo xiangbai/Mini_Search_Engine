@@ -35,13 +35,14 @@ class Offset;
 class Segment;
 class Document {
 friend class UniquePage ;
+friend class Inverted ;
 public:
-	//Document(const std::string &webpage, const std::string &indexpage, const std::string &stopfile);
-	Document(Offset &offset, Segment &seg, const std::string &topfile);
+	Document(Offset &offset, Segment &seg);
 	virtual ~Document();
 	void get_info(WebPage &page , std::string &document);  //获取网页的content内容
 	void display(int docid, WebPage &page);
 	void deal_page();
+	void get_top_word(WebPage &page);
 	void write_top_word();
 private:
 	Offset &offset ;

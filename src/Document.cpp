@@ -15,14 +15,16 @@
 #include "Offset.h"
 #include "Segment.h"
 #include "MixSegment.hpp"
+#include "Inverted.h"
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 #define TOPN 10
 using namespace CppJieba;
 
-Document::Document(Offset &offset, Segment &seg, const std::string &topfile):offset(offset), seg(seg), v_webpage(0)
+Document::Document(Offset &offset, Segment &seg):offset(offset), seg(seg), v_webpage(0)
 {
-	deal_page();
+
 }
+//分词操作
 void Document::deal_page()
 {
 	for(std::map<int, std::string>::iterator iter = offset.v_content.begin(); iter != offset.v_content.end(); ++iter)
@@ -30,28 +32,36 @@ void Document::deal_page()
 		WebPage page ;
 		get_info(page, iter->second); //获取content
 		page._docid = iter->first ;
-		seg.cut_page(page._content, page.m_word);//分词
+		seg.cut_page(page._content, page.m_word);//分词结果已读入内存中
 
-		//构建优先级对列
-		std::priority_queue<std::pair< int,std::string >, std::vector<std::pair<int, std::string > >,std::less<std::pair< int,std::string> > > queueKless;
-		for(std::map<std::string, int>::iterator iter = page.m_word.begin(); iter != page.m_word.end(); ++iter)
-		{
-			queueKless.push(std::make_pair(iter->second, iter->first));   //去停用词之后的按词频的排序
-		}
-		int topN = MIN(TOPN, queueKless.size());
-	//	_fout<<page._docid<<"\t";
-		for(int i = 0 ; i < topN; ++i)
-		{
-			page.top_word.push_back(queueKless.top().second) ;   //对应的docid所对应的topn词频
-		//	_fout<<queueKless.top().second<<"\t" ;
-			queueKless.pop() ;
-		}
-	//	_fout<<std::endl;
+		//get_top_word(page);  //获取topN
 		v_webpage.push_back(page) ;     //将排序之后的网页库加入到数组中，以备后面的网页去重使用
 		if(page._docid %1000 ==0)
 		{
 			std::cout<<"ok"<<std::endl;
 		}
+	}
+	std::cout<<"v_webpage size: "<<v_webpage.size()<<std::endl;
+}
+//获取topN
+void Document::get_top_word(WebPage &page)
+{
+	//构建优先级对列
+	std::priority_queue<std::pair< int,std::string >, std::vector<std::pair<int, std::string > >,std::less<std::pair< int,std::string> > > queueKless;
+	for(std::map<std::string, int>::iterator iter = page.m_word.begin(); iter != page.m_word.end(); ++iter)
+	{
+		queueKless.push(std::make_pair(iter->second, iter->first));   //去停用词之后的按词频的排序
+	}
+	int topN = MIN(TOPN, queueKless.size());
+	for(int i = 0 ; i < topN; ++i)
+	{
+		page.top_word.push_back(queueKless.top().second) ;   //对应的docid所对应的topn词频
+		queueKless.pop() ;
+	}
+	v_webpage.push_back(page) ;     //将排序之后的网页库加入到数组中，以备后面的网页去重使用
+	if(page._docid %1000 ==0)
+	{
+		std::cout<<"ok"<<std::endl;
 	}
 }
 void Document::display(int docid, WebPage &page)
@@ -107,12 +117,19 @@ int main(int argc, char **argv)
 	std::string dict = conf.get_value("dict_path") ;
 	std::string model = conf.get_value("model_path") ;
 	MixSegment segment(dict.c_str(), model.c_str()) ;
-	Offset offset(conf.get_value("Web_page"), conf.get_value("Index_page"));
+	//Offset offset(conf.get_value("Web_page"), conf.get_value("Index_page"));
 	Segment seg(conf.get_value("Stop_list"), segment);
 
-	Document doc(offset, seg,conf.get_value("TopN_list"));
+	//Document doc(offset, seg);
+	//doc.deal_page();
+
+	Offset n_offset(conf.get_value("Web_page"), conf.get_value("New_index"));
+	Document n_doc(n_offset, seg);
+	n_doc.deal_page();
 	std::cout<<"end document"<<std::endl;
-	UniquePage uqpage(conf.get_value("New_index"),doc, offset);
-	std::cout<<"end unique"<<std::endl;
+	Inverted invert(conf.get_value("Inverted_index"),n_doc);
+
+	//UniquePage uqpage(conf.get_value("New_index"),doc, offset);   //网页去重
+	//std::cout<<"end unique"<<std::endl;
 	return 0 ;
 }
