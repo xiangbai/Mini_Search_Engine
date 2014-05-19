@@ -25,6 +25,6 @@ private:
 	std::string _title ;
 	std::string _content ;
 	std::map<std::string, int> m_word ;   //记录词和词频
-	std::map<std::string, int> top_word ;   //记录词和词频
+	std::vector<std::string> top_word ;   //记录top k的词
 };
 #endif /* WEBPAGE_H_ */
