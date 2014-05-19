@@ -15,6 +15,7 @@
 class WebPage {
 friend class Document ;
 friend class UniquePage ;
+friend class Inverted ;
 public:
 	WebPage();
 	virtual ~WebPage();
