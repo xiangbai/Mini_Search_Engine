@@ -19,6 +19,7 @@ public:
 	virtual ~Segment();
 	void cut_page(std::string &content, std::map<std::string, int> &map_word);  //进行分词操作
 	bool extract(const std::string &stopword);
+	bool is_contain_enter(const std::string &word, const std::string &c_s);
 
 private:
 	CppJieba::MixSegment &segment ;

@@ -31,11 +31,16 @@ void Segment::cut_page(std::string &content, std::map<std::string, int> &map_wor
 	 * 需要注意，还需要考虑停用词的情况，去除停用词的所有新词
 	 */
 	//遍历分词数组，以记录每个分词的词频
+
 	std::string table(1, '\r');  //去除tab键
+	std::string tab(1, '\t') ;
+	std::string enter(1,'\n');
+	char c = 13 ;
+	std::string c_s(1,c);
 	//用于统计词和词频
 	for(std::vector<std::string>::iterator iter = words.begin(); iter != words.end(); iter++)
 	{
-		if(*iter != " " && *iter != table && extract(*iter))
+		if((!is_contain_enter(*iter, c_s) )&&*iter != " " && *iter != table && *iter != tab && *iter != enter && extract(*iter))
 		{
 			//将分割出来的单词添加到map中，并统计该词出现的词频
 			pair<std::map<string, int>::iterator, bool> ret =
@@ -45,6 +50,18 @@ void Segment::cut_page(std::string &content, std::map<std::string, int> &map_wor
 				++ret.first->second;
 			}
 		}
+	}
+}
+bool Segment::is_contain_enter(const std::string &word, const std::string &c_s)
+{
+	std::size_t found = word.find(c_s) ;
+	if(found != std::string::npos)  //包含换行
+	{
+		return true ;
+	}
+	else
+	{
+		return false ;
 	}
 }
 //去停用词
