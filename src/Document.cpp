@@ -19,6 +19,11 @@
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 #define TOPN 10
 using namespace CppJieba;
+/*
+ * 文档处理类，主要函数的作用是：
+ *对网页库中的数据进行分词
+ *统计topk，以去除重复网页
+ */
 
 Document::Document(Offset &offset, Segment &seg):offset(offset), seg(seg), v_webpage(0)
 {
@@ -32,7 +37,7 @@ void Document::deal_page()
 		WebPage page ;
 		get_info(page, iter->second); //获取content
 		page._docid = iter->first ;
-		seg.cut_page(page._content, page.m_word);//分词结果已读入内存中
+		seg.cut_page(page._content, page.m_word);//分词结果已读入内存中,已经知道相应网页中的词和词频
 
 		//get_top_word(page);  //获取topN
 		v_webpage.push_back(page) ;     //将排序之后的网页库加入到数组中，以备后面的网页去重使用
@@ -110,26 +115,3 @@ Document::~Document() {
 }
 
 
-int main(int argc, char **argv)
-{
-	Conf conf(argv[1]);
-
-	std::string dict = conf.get_value("dict_path") ;
-	std::string model = conf.get_value("model_path") ;
-	MixSegment segment(dict.c_str(), model.c_str()) ;
-	//Offset offset(conf.get_value("Web_page"), conf.get_value("Index_page"));
-	Segment seg(conf.get_value("Stop_list"), segment);
-
-	//Document doc(offset, seg);
-	//doc.deal_page();
-
-	Offset n_offset(conf.get_value("Web_page"), conf.get_value("New_index"));
-	Document n_doc(n_offset, seg);
-	n_doc.deal_page();
-	std::cout<<"end document"<<std::endl;
-	Inverted invert(conf.get_value("Inverted_index"),n_doc);
-
-	//UniquePage uqpage(conf.get_value("New_index"),doc, offset);   //网页去重
-	//std::cout<<"end unique"<<std::endl;
-	return 0 ;
-}
