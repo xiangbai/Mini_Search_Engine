@@ -9,14 +9,43 @@
 #include "Conf.h"
 /*
  * 将索引内容读入到内存中
+ * 加载网页内容到内存中
  */
 Offset::Offset(const std::string &webpage, const std::string &indexpage) {
 	// TODO Auto-generated constructor stub
 	v_offset.clear() ;
 	v_content.clear() ;
+	m_invert.clear();
 	_loadIndexWordDict(webpage, indexpage);
 }
+Offset::Offset(const std::string &invertfile)
+{
+	v_offset.clear() ;
+	v_content.clear() ;
+	m_invert.clear();
+	_loadInvertedDict(invertfile);
+}
+/*
+ * 加载倒排索引到内存中
+ */
+void Offset::_loadInvertedDict(const std::string &invertfile)
+{
+	std::ifstream fin;
+	fin.open(invertfile.c_str()) ;
+	if(!fin)
+	{
+		perror("Error opening file");
+	}
+	std::string line ;
+	/*while(getline(fin, line))
+	{
 
+	}*/
+	fin.close();
+}
+/*
+ * 加载索引文件到内存中
+ */
 void Offset::_loadIndexWordDict(const std::string &webpage, const std::string &indexpage)
 {
 	std::ifstream fin;
@@ -47,7 +76,9 @@ void Offset::_loadIndexWordDict(const std::string &webpage, const std::string &i
 	std::cout<<"index size is: "<<v_offset.size()<<std::endl;
 	std::cout<<"content size is: "<<v_content.size()<<std::endl;
 }
-
+/*
+ * 加载页面内容到内存中
+ */
 void Offset::_loadContentDict(FILE *p_page, int docid, int start_index, int end_index)
 {
 	fseek(p_page, start_index, SEEK_SET); //定位文件指针
