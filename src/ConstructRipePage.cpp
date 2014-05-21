@@ -9,6 +9,10 @@
 #include "EncodingConverter.h"
 #include <fstream>
 #include <iostream>
+/*
+ * 遍历目录下的所有页面，提取相应的内容统一存储在一个文件里，同时为这个文件建立一个索引文件，
+ * 以便快速定位到某一个网页内容
+ */
 ConstructRipePage::ConstructRipePage(const std::string &source, const std::string &destinate, const std::string &indexfile)
 	:t_pageid(1), t_index(0), start_index(0), end_index(-1) {
 	// TODO Auto-generated constructor stub
