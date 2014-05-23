@@ -25,6 +25,8 @@ int main(int argc, char **argv)
 	//doc.deal_page();
 
 	Offset n_offset(conf.get_value("Web_page"), conf.get_value("New_index"));
+	n_offset._init_page(conf.get_value("Web_page"), conf.get_value("New_index")) ;
+
 	Document n_doc(n_offset, seg);
 	n_doc.deal_page();
 	std::cout<<"end document"<<std::endl;
