@@ -7,6 +7,7 @@
 
 #include "Offset.h"
 #include "Conf.h"
+#include <string.h>
 /*
  * 将索引内容读入到内存中
  * 加载网页内容到内存中
@@ -16,7 +17,7 @@ Offset::Offset(const std::string &webpage, const std::string &indexpage) {
 	v_offset.clear() ;
 	v_content.clear() ;
 	m_invert.clear();
-	_loadIndexWordDict(webpage, indexpage);
+	//_loadIndexWordDict(webpage, indexpage);   //加载索引文件到内存中
 }
 Offset::Offset(const std::string &invertfile)
 {
@@ -24,6 +25,10 @@ Offset::Offset(const std::string &invertfile)
 	v_content.clear() ;
 	m_invert.clear();
 	_loadInvertedDict(invertfile);
+}
+void Offset::_init_page(const std::string &webpage, const std::string &indexpage)
+{
+	_loadIndexWordDict(webpage, indexpage);
 }
 /*
  * 加载倒排索引到内存中
@@ -85,6 +90,16 @@ void Offset::_loadContentDict(FILE *p_page, int docid, int start_index, int end_
 	char *result = new char[end_index + 1]() ;
 	fgets(result, end_index + 1, p_page) ; //获取一个文档的内容
 	v_content.insert(std::make_pair(docid, result)) ;
+}
+std::string &Offset::get_content(int docid)
+{
+
+	int content_begin ;
+	int content_end;
+	content_begin = v_content[docid].find("<content>");
+	content_end = v_content[docid]("</content>") ;
+	std::string _content = v_content[docid].substr(content_begin+9, content_end-content_begin-9) ;
+	return v_content[docid] ;
 }
 Offset::~Offset() {
 	// TODO Auto-generated destructor stub
