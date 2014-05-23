@@ -11,6 +11,7 @@
 #include "Conf.h"
 #include <cmath>
 #include <iostream>
+#include "Query.h"
 /*
  * 将客户的查询词进行分词
  * 统计词频，和归一化的结果
@@ -55,6 +56,7 @@ void ClientDeal::display()
 ClientDeal::~ClientDeal() {
 	// TODO Auto-generated destructor stub
 }
+
 int main(int argc, char **argv)
 {
 	Conf conf(argv[1]);
@@ -63,8 +65,11 @@ int main(int argc, char **argv)
 	std::string model = conf.get_value("model_path") ;
 	MixSegment segment(dict.c_str(), model.c_str()) ;
 	Segment seg(conf.get_value("Stop_list"), segment);
-	std::string query("北京大学举行云计算大会");
+	std::string query("美国的工业化得益于欧洲的技术进步");
 	ClientDeal client(seg, query);
 	client.display();
+
+	Query q(client, conf.get_value("Inverted_index"));
+	q.display();
 	return 0 ;
 }

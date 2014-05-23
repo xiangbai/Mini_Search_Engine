@@ -13,7 +13,7 @@
 #include <vector>
 class Segment;
 class ClientDeal{
-//friend class Query ;
+friend class Query ;
 public:
 	ClientDeal(Segment &seg, std::string &query);
 	void count_weight();
