@@ -35,13 +35,22 @@ public:
 	void write_to_file(const std::string &filename);
 	void get_query_map(ClientDeal &client);//在倒排索引中搜索所有包含搜锁分词中的内容集合
 	void run_query(ClientDeal &client);
+	void count_common_docid();
+	int calculate_similarity(ClientDeal &client);  //计算文本相似度，并返回相似文本的docid号
+	void display();
 	virtual ~Query();
 private:
 	ClientDeal &client;
-	__gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> > hash_search;
-	__gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> > hash_query;
+	__gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> > hash_search;  //倒排索引中的所有
+	__gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> > hash_query; //包含搜索词的所有docid
+
+	std::string min_str_size ;  //集合中最小的一个
+	std::map<int, std::vector<std::pair<std::string, double> > > m_common_query; //交集集合
+
+
+	typedef std::map<int, std::vector<std::pair<std::string, double> > >::iterator m_common_iter ;
 	typedef __gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> >::iterator hash_search_iter ;
-		typedef __gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> >::const_iterator hash_search_iter_const ;
+	typedef __gnu_cxx ::hash_map<std::string, std::vector<std::pair<int, double> >, __gnu_cxx ::hash<std::string> >::iterator hash_search_iter_const ;
 };
 
 #endif /* QUERY_H_ */
